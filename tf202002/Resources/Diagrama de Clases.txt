@@ -1,0 +1,66 @@
+[Objeto]^--[Protagonista]
+[Objeto]^--[Aliado]
+[Objeto]^--[Corrupt]
+[Objeto]^--[Assasin]
+[Objeto]^--[Boss]
+[Objeto]^--[Muro]
+[Objeto]^--[Impostor]
+[Objeto]^--[Imagen]
+[Aliados]Contiene1++-1..*[Aliado]
+[Corrupts]Contiene1++-1..*[Corrupt]
+[Assasins]Contiene1++-1..*[Assasin]
+[Muros]Contiene1++-1..*[Muro]
+[Impostores]Contiene1++-1..*[Impostor]
+[Objeto]^--[Flecha]
+[Objeto]^--[Explosion]
+[Flechas]Contiene1++-1..*[Flecha]
+[Explosiones]Contiene1++-1..*[Explosion]
+[Impostor]1-.->1[Explosion]
+[Boss]1-.->1[Explosiones]
+[Protagonista]1-.->1[Flechas]
+[Assasin]1-.->1[Flechas]
+[Juego]1-.-1[Imagen]
+[Juego]Contiene1++-1..*[Protagonista]
+[Juego]Contiene1++-1..*[Aliados]
+[Juego]Contiene1++-1..*[Corrupts]
+[Juego]Contiene1++-1..*[Assasins]
+[Juego]Contiene1++-1..*[Muros]
+[Juego]Contiene1++-1..*[Boss]
+
+[Objeto| -x:Int16; -y:Int16; -dx:Int16; -dy:Int16; -ancho:Int16; -alto:Int16; -fila:Int16; -columna:Int16; -vida:Int16; |+Objeto(); +Objeto(Int16, Int16); +GetX():Int16; +GetY():Int16; +Margenes():Rectangle; +Colision(Objeto*):Boolean; +Graficar(Graphics*):Void; +SetD(Int16):Void;]
+
+[Protagonista|-puntos:Int16; -flechas:Flechas*; -vivo:Boolean; |+Protagonista(Int16, Int16):Objeto(Int16, Int16); +Mover(KeyEventArgs*):Void; +LineaVida(Graphics*):Void; +SetVida(Int16):Void; +GetVida():Int16; +ColisionMuros(KeyEventArgs*, Muros*):Boolean;  +Disparar():Boolean; +GetFlechas():Flechas*; +GetVivo():Boolean; +SetVivo(Boolean):Void;]
+
+[Boss| -explosiones:Explosiones*; -r:Random*; -time:Int16; -vivo:Boolean; |+Boss(Int16):Objeto(Int16);  +Hechizo(Muros*):Void; +Get():Explosiones; +GetVivo():Boolean; +SetVivo(Boolean):Void;]
+
+[Assasin| -flechas:Flechas*; -time:Int16; -inflijido:Int16; -r:Random*; |+Assasin(Int16, Int16):Objeto(Int16, Int16); +Mover(Muros*):Void; +ColisionMuros(Muros*, Int16):Boolean; +Disparar(Int16, Int16):Void; +GetFlechas():Flechas*; +GetInflijido():Int16; +SetInflijido(Int16):Void;]
+
+[Corrupt| |+Corrupt(Int16):Objeto(Int16); +Mover(Int16, Int16, Muros*):Void; +ColisionMuros(Muros*, Int16):Boolean;]
+
+[Aliado| |+Aliado(Int16, Int16):Objeto(Int16, Int16); +Mover(Int16, Int16, Rectangle, Muros*):Void; +ColisionMuros(Muros*, Int16):Boolean;]
+
+[Impostor| -explosion:Explosiones* |+Impostor(Int16, Int16):Objeto(Int16, Int16); +Mover(Int16, Int16, Int16, Muros*, Protagonista*):Void; +ColisionMuros(Muros*, Int16):Boolean; +GetExplosion():Explosiones*;]
+
+[Flecha| -shootsound:SoundPlayer*; |+Flecha(Int16, Int16, Int16):Objeto(Int16, Int16); +Mover():Void;]
+
+[Explosion| -explosionsound:SoundPlayer*; |+Explosion(Int16, Int16):Objeto(Int16, Int16); +Animacion():Void; +GetFila():Int16; +GetColumna():Int16;]
+
+[Impostores| -impostores:array(Impostor*)*; -cant:Int16; |+Impostores(); +~Impostores(); +Agregar(Int16, Int16):Void; +Eliminar(Int16):Void; +Size():Int16; +Get():array(Impostor*)*; +Movimiento(Graphics*, Protagonista*, Muros*):Void; +Kamikaze(Graphics*, Protagonista*);]
+
+[Aliados| -aliados:array(Aliado*)*; -cant:Int16; |+Aliados(); +~Aliados(); +Agregar(Int16, Int16):Void; +Eliminar(Int16):Void; +Size():Int16; +GetAliados():array(Aliado*)*; +Movimiento(Graphics*, Protagonista*, Muros*):Void;]
+
+[Assasins| -assasins:array(Assasin*)*; -cant:Int16; |+Assasins(); +~Assasins(); +Agregar():Void; +Eliminar(Int16):Void; +Size():Int16; +Get(Int16):Assasin*; +Movimiento(Protagonista*):Void;]
+
+[Corrupts| -corrupts:array(Corrupt*)*; -cant:Int16; |+Corrupts(); +~Corrupts(); +Agregar(Int16, Int16):Void; +Eliminar(Int16):Void; +Size():Int16; +Get():array(Corrupt*)*;]
+
+[Flechas| -flechas:array(Flecha*)*; -cant:Int16; |+Flechas(); +~Flechas(); +Agregar(Int16, Int16, Int16):Void; +Eliminar(Int16):Void; +Size():Int16; +Get():array(Flecha*)*; +Movimiento(Graphics*):Void;]
+
+[Explosiones| -explosiones:array(Explosion*)*; -cant:Int16; |+Explosiones(); +~Explosiones(); +Agregar(Int16, Int16):Void; +Eliminar(Int16):Void; +Size():Int16; +Get():array(Explosion*)*; +Movimiento(Graphics*):Void;]
+
+[Muro| | +Muro(Int16, Int16, Int16, Int16):Objeto(Int16, Int16);]
+
+[Muros| -muros:array(Muro*)*; -cant:Int16; |+Agregar(Int16, Int16, Int16, Int16):Void; +Eliminar(Int16):Void; +Size():Int16; +Movimiento(Graphics*):Void;]
+
+[Juego| -introduccion:Introduccion*; -resultado:Resultado*; -pj:Protagonista*; -aliados:Aliados*; -corrupts:Corrupts*; -assasins:Assasins*; -impostores:Impostores*; -boss:Boss*; -piso:Muros*; -muros:Muros*; -r:Random*; -dungeon:SoundPlayer; -NumAli:Int16; -jugar:Boolean; -dificultad:Boolean; -salida:Boolean; -time:clock_t; |+Juego(); +~Juego(); +MenuPrincipal(Graphics*):Void; +Jugar(Graphics*):Void; +MoverJugador(KeyEventArgs*):Void; +BarraJugador(Graphics*):Void; +AliadosCurar():Void; +CorruptsCorromper(Graphics*):Void; +ColisionFlechasAssasins():Void; +ColisionFlechasJugador():Void; +ImpostorExplosion(Graphics*):Void; +BossExplosiones():Void; +Dificultad(Graphics*):Void; +Resultados(Graphics*):Void; +GetJugar():Boolean; +SetJugar(Boolean):Void; +SetTime(clock_t):Void;]
+
+[Imagen| |+Imagen(Int16, Int16, String*, Int16):Objeto(Int16, Int16); +SetFila(Int16):Void;]
